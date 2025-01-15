@@ -1,0 +1,91 @@
+{
+	"mpiSim": {
+		"_comment": "LogGOPS model's unit is picosecond and must be integer",
+		"LogGOPS": {
+			"L":"0",
+			"o":"0",
+			"g":"0",
+			"G":"0",
+			"O":"0",
+			"S":"262145"
+		}
+	},
+	"node": {
+		"nodeNum": "8",
+		"noise": {
+			"noiseType": "normal",
+			"noiseParameters":[0.016666667, 0.1]
+		}
+	},
+	
+	"core": {
+		"coreNum": "64"
+	},
+
+	"osNoise" : {
+		"osNoiseTraceDir": "os_trace"
+	},
+
+	"program": {
+		"_comment": "program model's unit is picosecond and must be integer",
+		"__main__": ["mainfun"],
+
+		"functions": {
+			"mainfun": {
+				"loop": {
+					"loopNum": "1",
+					"call": ["func1", "func2"]
+				}
+			},
+			"func1": {
+				"call": ["k4"],
+				"recordTime": "yes"
+			},
+			"func2": {
+				"call": ["kernelfun", "linear_alltoall"]
+			},
+			"kernelfun": {
+				"loop": {
+					"loopNum": "100",
+					"call": ["k1", "k2"]
+				}
+			}
+		},
+
+		"kernels": {
+			"k1": {
+				"runTime": "1000",
+				"noise": {
+					"noiseType": "pareto",
+					"noiseParameters":[10]
+				}
+			},
+			"k2": {
+				"loop": {
+					"loopNum": "1000",
+					"call":["k3"]
+				}
+			},
+			"k3": {
+				"runTime": "1000",
+				"noise": {
+					"noiseType": "pareto",
+					"noiseParameters": [10]
+				}
+			},
+			"k4": {
+				"runTime": "100000",
+				"noise": {
+					"noiseType": "pareto",
+					"noiseParameters": [10]
+				}
+			}
+		},
+
+		"communications": {
+			"linear_alltoall": {
+				"messageBytes": 100
+			}
+		}
+	}
+}

@@ -1,0 +1,14 @@
+num_ranks 2
+
+rank 0 {
+l1: calc 0
+l2: recv 1b from 1 tag 0
+l3: send 1b to 1 tag 0
+l1 requires l2
+l3 requires l1
+}
+
+rank 1 {
+l1: send 1b to 0 tag 0
+l2: recv 1b from 0 tag 0
+}

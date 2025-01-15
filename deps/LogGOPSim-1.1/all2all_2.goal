@@ -1,0 +1,9 @@
+num_ranks 2
+
+rank 0 {
+l1: send 1b to 1 tag 0
+}
+
+rank 1 {
+l1: recv 1b from 0 tag 0
+}
